@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quakewatch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quakewatch
+  template:
+    metadata:
+      labels:
+        app: quakewatch
+    spec:
+      containers:
+      - name: quakewatch
+        image: leoultimo/watcher:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        resources:
+          requests:
+            memory: "400Mi"
+            cpu: "250m"
+          limits:
+            memory: "800Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quakewatch-service
+spec:
+  type: ClusterIP
+  selector:
+
+    app: quakewatch
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000

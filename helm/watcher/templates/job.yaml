@@ -1,0 +1,39 @@
+{{- /*
+  CronJob Template for Health Checks
+  Periodically checks the application health status.
+*/ -}}
+{{- if .Values.healthCheck.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.app }}-health-check
+  labels:
+    {{- include "watcher.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.healthCheck.schedule | quote }}
+  successfulJobsHistoryLimit: {{ .Values.healthCheck.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .Values.healthCheck.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: {{ .Values.healthCheck.ttlSecondsAfterFinished }}
+      template:
+        spec:
+          containers:
+            - name: health-checker
+              image: {{ .Values.healthCheck.image }}
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  echo "Starting health check at $(date)"
+                  
+                  # Check if service is reachable
+                  if curl -f -s -o /dev/null -w "%{http_code}" http://{{ .Values.healthCheck.serviceName }} | grep -q "200"; then
+                    echo "✓ Health check passed - Service is UP"
+                    exit 0
+                  else
+                    echo "✗ Health check failed - Service is DOWN"
+                    exit 1
+                  fi
+          restartPolicy: OnFailure
+{{- end }}

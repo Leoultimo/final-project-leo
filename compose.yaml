@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: quakewatch-app
+    container_name: app_container
+    ports:
+      - "0.0.0.0:5000:5000"

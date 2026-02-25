@@ -1,0 +1,19 @@
+apiVersion: v2
+name: watcher
+description: A Helm chart for QuakeWatch - Seismic event monitoring application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+home: https://github.com/leo/quakewatch
+icon: https://raw.githubusercontent.com/leo/quakewatch/main/docs/icon.png
+keywords:
+  - quakewatch
+  - seismic
+  - monitoring
+  - kubernetes
+maintainers:
+  - name: Leo
+    email: leo@example.com
+sources:
+  - https://github.com/leo/quakewatch
+dependencies: []
