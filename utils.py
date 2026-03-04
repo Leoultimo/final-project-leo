@@ -37,7 +37,7 @@ def generate_graph(days, lat, lon, radius, title_suffix=""):
         'starttime': start_time
     }
     usgs_url = "https://earthquake.usgs.gov/fdsnws/event/1/query"
-    response = requests.get(usgs_url, params=params)
+    response = requests.get(usgs_url, params=params, timeout=10)
 
     plt.figure(figsize=(10, 5))
     if response.status_code != 200:
@@ -76,7 +76,7 @@ def _plot_earthquake_data(response, days, title_suffix):
         plt.bar(days_list, counts)
         plt.xlabel('Date')
         plt.ylabel('Number of Earthquakes')
-        plt.title('Earthquakes in Last %d Days %s' % (days, title_suffix))
+        plt.title(f'Earthquakes in Last {days} Days {title_suffix}')
         plt.xticks(rotation=45)
         plt.tight_layout()
     else:
@@ -100,7 +100,7 @@ def get_top_earthquakes(limit=5):
         'minmagnitude': 1
     }
     usgs_url = "https://earthquake.usgs.gov/fdsnws/event/1/query"
-    response = requests.get(usgs_url, params=params)
+    response = requests.get(usgs_url, params=params, timeout=10)
     if response.status_code != 200:
         return []
     data = response.json()
@@ -122,7 +122,7 @@ def get_last_earthquake():
         'minmagnitude': 1
     }
     usgs_url = "https://earthquake.usgs.gov/fdsnws/event/1/query"
-    response = requests.get(usgs_url, params=params)
+    response = requests.get(usgs_url, params=params, timeout=10)
     if response.status_code != 200:
         return None
     data = response.json()

@@ -4,11 +4,12 @@ import os
 from logging.handlers import RotatingFileHandler
 
 import matplotlib
-matplotlib.use('Agg')  # Force non-GUI backend before any other matplotlib import
 from flask import Flask, request
 
 from dashboard import dashboard_blueprint
 from utils import timestamp_to_str  # Import our custom filter
+
+matplotlib.use('Agg')  # Force non-GUI backend before any other matplotlib import
 
 def create_app():
     """Create and configure the Flask application."""

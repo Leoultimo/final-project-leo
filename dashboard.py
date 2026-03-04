@@ -67,7 +67,7 @@ class EarthquakeDashboard:
             'starttime': start_time
         }
         usgs_url = "https://earthquake.usgs.gov/fdsnws/event/1/query"
-        response = requests.get(usgs_url, params=params)
+        response = requests.get(usgs_url, params=params, timeout=10)
         if response.status_code != 200:
             current_app.logger.error("Error fetching data from USGS API")
             return jsonify(error="Error fetching data from USGS API"), response.status_code
@@ -112,7 +112,8 @@ class EarthquakeDashboard:
         days = 5 * 365  # Approximate days in 5 years
         loc_name = request.args.get('location', "Tel Aviv, Israel")
         location = COUNTRIES.get(loc_name, COUNTRIES["Tel Aviv, Israel"])
-        img = generate_graph(days, location["lat"], location["lon"], location["radius"], title_suffix="(5 Years)")
+        img = generate_graph(days, location["lat"], location["lon"],
+                             location["radius"], title_suffix="(5 Years)")
         return send_file(img, mimetype='image/png')
 
     @staticmethod
