@@ -96,7 +96,7 @@ containerPort: 5000
 # -- Resource limits and requests
 resources:
   limits:
-    cpu: 500m
+    cpu: 600m
     memory: 800Mi
   requests:
     cpu: 250m
